@@ -5,6 +5,7 @@ using System.Data;
 using System.Drawing;
 using System.Linq;
 using System.Net;
+using System.IO;
 using System.Net.Sockets;
 using System.Text;
 using System.Threading;
@@ -23,7 +24,7 @@ namespace ChatApp
 
 
         //declare for setup
-        public string chatIpServer = "192.168.1.138";
+        public string chatIpServer = "127.0.0.1";
         public int port = 9999;
 
         public ChatWindow()
@@ -32,43 +33,15 @@ namespace ChatApp
            // connect();
         }
 
-        //private void connect()
-        //{
-        //    Thread stThread = new Thread(Setup);
-        //    stThread.IsBackground = true;
-        //    stThread.Start();
-        //}
-        //private void Setup()
-        //{
-        //    try
-        //    {
-        //        CheckForIllegalCrossThreadCalls = false;
-        //        client = new TcpClient();
-        //        client.Connect(chatIpServer, port);
-        //        stream = client.GetStream();
-        //        Thread listen = new Thread(listenToServer);
-        //        listen.IsBackground = true;
-        //        listen.Start();
-        //    }
-        //    catch
-        //    {
-        //        MessageBox.Show("Can't connect to server");
-        //        this.Close();
-        //    }
-        //}
-
         private void listen()
         {
-
+            
             while (true)
             {
-                //try
-                //{
-                    var bufferSize = client.ReceiveBufferSize;
-                    byte[] instream = new byte[bufferSize];
-                    Client.client.GetStream().Read(instream, 0, bufferSize);
-                    string message = Encoding.UTF8.GetString(instream);
-                //stream.Flush();
+                var bufferSize = client.ReceiveBufferSize;
+                byte[] instream = new byte[bufferSize];
+                Client.client.GetStream().Read(instream, 0, bufferSize);
+                string message = Encoding.UTF8.GetString(instream);
 
                 //process message
                 //decrypt incoming message
@@ -82,6 +55,7 @@ namespace ChatApp
                     {
 
                         case "UPDATE_MEMBER":
+                            Console.WriteLine("Connect update member!");
                             printMember(data[1]);
                             break;
 
@@ -95,47 +69,42 @@ namespace ChatApp
                             break;
 
                         case "CHAT":
+                            
                             print(message.Replace(chatHeader + '|', ""));
                             break;
                         
-                        //case "REDIRECT":
-                        //    client.Close();
-                        //    stream.Close();
-                        //    chatIpServer = data[1];
-                        //    Console.WriteLine("ip: " + data[1]);
-                        //    port = Int32.Parse(data[2]);
-                        //    Console.WriteLine("port: " + data[2]);
-                        //    Setup();
-                        //    break;
                 }
-                //}
-                //catch
-                //{
-                //    MessageBox.Show("Get an unexpected error! Try again later");
-                //    client.Close();
-                //    stream.Close();
-                //    this.Close();
-                //    return;
-                //}
             }
         }
         private void printMember(string data)
         {
-            foreach (string m in data.Split('\n'))
-            {
-                
-                foreach (var i in member_lv.Items)
+               
+            string[] m = data.Split('\n');
+            int length = m.Length;
+
+            Console.WriteLine(member_lv.Items.Count);
+            if (member_lv.Items.Count == 0)
+            {   
+                for (int i =0; i<length; i++)
                 {
-                    if(i.ToString() != m)
-                    {
-                        ListViewItem it = new ListViewItem(m);
-                        member_lv.Items.Add(it);
-
-                    }
+                    ListViewItem it = new ListViewItem(m[i]);
+                    member_lv.Items.Add(it);
                 }
-
-                
+               
             }
+            else
+            {
+                ListViewItem it = new ListViewItem(m[m.Length - 1]);
+                member_lv.Items.Add(it);
+            }
+        }
+
+        private void sendFile()
+        {
+            string filename = "E:\\School\\HKIINAM4\\LTUDM\\Project\\ChatApp\\TextFile1.txt";
+            //byte[] noti = new byte[6000];
+            byte[] noti = File.ReadAllBytes(filename);
+            Client.client.GetStream().Write(noti, 0, noti.Length);
         }
         private void SendData(string message)
         {
@@ -148,7 +117,7 @@ namespace ChatApp
                 }
                 string length = message.Length.ToString();
                 message = String.Format("{0, -10}", length) + message;
-                Console.WriteLine(message);
+                //Console.WriteLine(message);
                 message = XORCipher(message);
 
                 byte[] noti = Encoding.UTF8.GetBytes(message);
@@ -263,5 +232,20 @@ namespace ChatApp
                 }
             }
         }
+
+        private void attach_bt_Click(object sender, EventArgs e)
+        {
+            //OpenFileDialog openFd = new OpenFileDialog();
+            //openFd.Filter = "Pdf.|*jpg;*pdf;*png";
+            //DialogResult dr = openFd.ShowDialog();  
+            sendFile();
+        }
+
+        private void save_File_btn_Click(object sender, EventArgs e)
+        {
+           
+        }
+
+        
     }
 }

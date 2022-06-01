@@ -36,6 +36,9 @@
             this.chat_lw = new System.Windows.Forms.RichTextBox();
             this.send_pt = new System.Windows.Forms.PictureBox();
             this.exit_pt = new System.Windows.Forms.PictureBox();
+            this.BackgroundWorker = new System.ComponentModel.BackgroundWorker();
+            this.attach_bt = new System.Windows.Forms.Button();
+            this.guna2Button1 = new Guna.UI2.WinForms.Guna2Button();
             this.member_gb.SuspendLayout();
             this.group_name_gb.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.send_pt)).BeginInit();
@@ -71,10 +74,10 @@
             // message_tb
             // 
             this.message_tb.Font = new System.Drawing.Font("Segoe UI Black", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.message_tb.Location = new System.Drawing.Point(228, 402);
+            this.message_tb.Location = new System.Drawing.Point(281, 399);
             this.message_tb.Multiline = true;
             this.message_tb.Name = "message_tb";
-            this.message_tb.Size = new System.Drawing.Size(450, 26);
+            this.message_tb.Size = new System.Drawing.Size(447, 35);
             this.message_tb.TabIndex = 0;
             this.message_tb.TextChanged += new System.EventHandler(this.message_tb_TextChanged);
             this.message_tb.KeyDown += new System.Windows.Forms.KeyEventHandler(this.message_tb_KeyDown);
@@ -108,9 +111,9 @@
             this.send_pt.BackgroundImage = global::ChatApp.Properties.Resources.send1;
             this.send_pt.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
             this.send_pt.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.send_pt.Location = new System.Drawing.Point(699, 401);
+            this.send_pt.Location = new System.Drawing.Point(734, 387);
             this.send_pt.Name = "send_pt";
-            this.send_pt.Size = new System.Drawing.Size(48, 30);
+            this.send_pt.Size = new System.Drawing.Size(43, 56);
             this.send_pt.TabIndex = 6;
             this.send_pt.TabStop = false;
             this.send_pt.Click += new System.EventHandler(this.sendBt_Click);
@@ -128,6 +131,32 @@
             this.exit_pt.TabStop = false;
             this.exit_pt.Click += new System.EventHandler(this.exit_bt_Click);
             // 
+            // attach_bt
+            // 
+            this.attach_bt.Image = ((System.Drawing.Image)(resources.GetObject("attach_bt.Image")));
+            this.attach_bt.Location = new System.Drawing.Point(228, 399);
+            this.attach_bt.Name = "attach_bt";
+            this.attach_bt.Size = new System.Drawing.Size(47, 36);
+            this.attach_bt.TabIndex = 8;
+            this.attach_bt.UseVisualStyleBackColor = true;
+            this.attach_bt.Click += new System.EventHandler(this.attach_bt_Click);
+            // 
+            // guna2Button1
+            // 
+            this.guna2Button1.BackColor = System.Drawing.Color.White;
+            this.guna2Button1.DisabledState.BorderColor = System.Drawing.Color.DarkGray;
+            this.guna2Button1.DisabledState.CustomBorderColor = System.Drawing.Color.DarkGray;
+            this.guna2Button1.DisabledState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(169)))), ((int)(((byte)(169)))), ((int)(((byte)(169)))));
+            this.guna2Button1.DisabledState.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(141)))), ((int)(((byte)(141)))), ((int)(((byte)(141)))));
+            this.guna2Button1.FillColor = System.Drawing.Color.Transparent;
+            this.guna2Button1.Font = new System.Drawing.Font("Segoe UI", 9F);
+            this.guna2Button1.ForeColor = System.Drawing.Color.White;
+            this.guna2Button1.Image = ((System.Drawing.Image)(resources.GetObject("guna2Button1.Image")));
+            this.guna2Button1.Location = new System.Drawing.Point(681, 399);
+            this.guna2Button1.Name = "guna2Button1";
+            this.guna2Button1.Size = new System.Drawing.Size(47, 35);
+            this.guna2Button1.TabIndex = 9;
+            // 
             // ChatWindow
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
@@ -137,6 +166,8 @@
             this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.ClientSize = new System.Drawing.Size(807, 499);
             this.ControlBox = false;
+            this.Controls.Add(this.guna2Button1);
+            this.Controls.Add(this.attach_bt);
             this.Controls.Add(this.message_tb);
             this.Controls.Add(this.exit_pt);
             this.Controls.Add(this.send_pt);
@@ -167,5 +198,8 @@
         private System.Windows.Forms.PictureBox send_pt;
         private System.Windows.Forms.PictureBox exit_pt;
         private System.Windows.Forms.RichTextBox chat_lw;
+        private System.ComponentModel.BackgroundWorker BackgroundWorker;
+        private System.Windows.Forms.Button attach_bt;
+        private Guna.UI2.WinForms.Guna2Button guna2Button1;
     }
 }

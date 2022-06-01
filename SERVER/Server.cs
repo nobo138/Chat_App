@@ -30,8 +30,6 @@ namespace SERVER
 
         }
 
-        string mainServer = "192.168.1.138";
-        string secondServer = "192.168.2.221";
         public static int numberOfClient = 0;
         public static TcpClient proxy = null;
 
@@ -116,7 +114,7 @@ namespace SERVER
                     message = message.Substring(10, length);
                     //prcessing
                     string[] data = message.Split('|');
-
+                    Console.WriteLine(message);
                     switch(data[0])
                     {
                         case "REGISTER":
@@ -136,7 +134,7 @@ namespace SERVER
                             break;
                         case "CHAT":
                             sendToRoom(chatHeader + '|' + getUser(client).Display_name + ": " + message.Substring(message.IndexOf('|') + 1, message.Length - chatHeader.Length - 1)
-                                        , getUser(client).Room_id);
+                                        , getUser(client).Room_id, client);
 
                             break;
                         case "JOIN":
@@ -152,7 +150,10 @@ namespace SERVER
                             proxy = client;
                             break;
                         case "CHAT_PROXY":
-                            sendToRoom(message, data[1]);
+                            sendToRoom(message, data[1], client);
+                            break;
+                        case "SEND_FILE":
+                            sendFile(message, data[1], client);
                             break;
                         default:
                             break;
@@ -196,18 +197,23 @@ namespace SERVER
             if (firstDocument != null) { return true; }
             else return false;
         }
-        private void sendToRoom(string message, string room_id)
+        private void sendToRoom(string message, string room_id, TcpClient client)
         {
-            if (!message.StartsWith("CHAT_PROXY"))
-                SendData("CHAT_PROXY" + "|" + room_id + "|" + message, proxy);
-            else
+            Console.WriteLine(message.StartsWith("CHAT_PROXY"));
+          
+            if (message.StartsWith("CHAT_PROXY") ==true)
             {
-                message = message.Remove(0, 18);
+                SendData("CHAT_PROXY" + "|" + room_id + "|" + message, client);
+            }
+            else
+            {  
+                //ssage = message.Remove(0, 18);
                 Console.WriteLine("Server sent: " + message);
                 foreach (var user in usersInRoom)
                 {
                     if (user.Room_id == room_id)
                     {
+                        Console.WriteLine("Send to data!");
                         SendData(message, user.UserConnection);
                     }
                 }
@@ -222,7 +228,8 @@ namespace SERVER
                 if (getUser(client).Room_id == member.Room_id)
                     listMember += member.Display_name + '\n';
             }
-            sendToRoom(updateMemberHeader + "|" + listMember, getUser(client).Room_id);
+            Console.WriteLine("Data: " + updateMemberHeader + "|" + listMember, getUser(client).Room_id);
+            sendToRoom(updateMemberHeader + "|" + listMember, getUser(client).Room_id, client);
         }
         private string createRoomId()
         {
@@ -236,7 +243,11 @@ namespace SERVER
             }
             return room_id;
         }
+        private void sendFile(string message, string room_id, TcpClient client)
+        {
+            byte[] clientData = new byte[1024 * 5000]; //46e113
 
+        }
         private bool authenticate(string username, string pwd)
         {
             var usersCollection = database.GetCollection<BsonDocument>("users");
@@ -374,9 +385,10 @@ namespace SERVER
                 Room_id = data[2],
                 Room_name = getRoomName(data[2]),
             };
-            sendToRoom(chatHeader + "|" + "Admin: " + user.Display_name + " joined !!", user.Room_id);
+            sendToRoom(chatHeader + "|" + "Admin: " + user.Display_name + " joined !!", user.Room_id, client);
             //SendData(chatHeader + "|" + "Admin: Welcome! " + user.Display_name, client);
             usersInRoom.Add(user);
+            Console.WriteLine("Send list User!");
             updateMember(client);
         }
         private void join(string[] data, TcpClient client)
@@ -405,7 +417,7 @@ namespace SERVER
                 SendData(outSuccessHeader, client);
                 var user = getUser(client);
                 usersInRoom.Remove(user);
-                sendToRoom(chatHeader + "|" + "Admin: " + user.Display_name + " left!!", user.Room_id);
+                sendToRoom(chatHeader + "|" + "Admin: " + user.Display_name + " left!!", user.Room_id, client);
 
                 string listMember = "";
                 foreach (User member in usersInRoom)
@@ -414,7 +426,7 @@ namespace SERVER
                         if (user.Room_id == member.Room_id)
                             listMember += member.Display_name + '\n';
                 }
-                sendToRoom(updateMemberHeader + "|" + listMember, user.Room_id);
+                sendToRoom(updateMemberHeader + "|" + listMember, user.Room_id, client);
             }
             catch { }
         }

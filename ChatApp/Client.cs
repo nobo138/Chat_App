@@ -191,7 +191,7 @@ namespace ChatApp
         {
             //SIGNUP signup = new SIGNUP();
             //signup.ShowDialog();
-            client_control.SelectedIndex = 2;
+            client_control.SelectedIndex = 5;
         }
 
         private void pw_tb_KeyDown(object sender, KeyEventArgs e)
@@ -406,6 +406,8 @@ namespace ChatApp
             SendData(signOutHeader + "|" + username + "|");
             listenToServer();
         }
+
+     
     }
 }
 
