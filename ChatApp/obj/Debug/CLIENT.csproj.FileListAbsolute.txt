@@ -1,0 +1,14 @@
+E:\School\HKIINAM4\LTUDM\Project\ChatApp\bin\Debug\ChatApp.exe.config
+E:\School\HKIINAM4\LTUDM\Project\ChatApp\bin\Debug\ChatApp.exe
+E:\School\HKIINAM4\LTUDM\Project\ChatApp\bin\Debug\ChatApp.pdb
+E:\School\HKIINAM4\LTUDM\Project\ChatApp\obj\Debug\CLIENT.csproj.AssemblyReference.cache
+E:\School\HKIINAM4\LTUDM\Project\ChatApp\obj\Debug\ChatApp.ChatWindow.resources
+E:\School\HKIINAM4\LTUDM\Project\ChatApp\obj\Debug\ChatApp.createRoom.resources
+E:\School\HKIINAM4\LTUDM\Project\ChatApp\obj\Debug\ChatApp.Client.resources
+E:\School\HKIINAM4\LTUDM\Project\ChatApp\obj\Debug\ChatApp.Properties.Resources.resources
+E:\School\HKIINAM4\LTUDM\Project\ChatApp\obj\Debug\CLIENT.csproj.GenerateResource.cache
+E:\School\HKIINAM4\LTUDM\Project\ChatApp\obj\Debug\CLIENT.csproj.CoreCompileInputs.cache
+E:\School\HKIINAM4\LTUDM\Project\ChatApp\obj\Debug\ChatApp.exe
+E:\School\HKIINAM4\LTUDM\Project\ChatApp\obj\Debug\ChatApp.pdb
+E:\School\HKIINAM4\LTUDM\Project\ChatApp\bin\Debug\Guna.UI2.dll
+E:\School\HKIINAM4\LTUDM\Project\ChatApp\obj\Debug\CLIENT.csproj.CopyComplete
