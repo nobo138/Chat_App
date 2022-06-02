@@ -12,3 +12,17 @@ E:\School\HKIINAM4\LTUDM\Project\ChatApp\obj\Debug\ChatApp.exe
 E:\School\HKIINAM4\LTUDM\Project\ChatApp\obj\Debug\ChatApp.pdb
 E:\School\HKIINAM4\LTUDM\Project\ChatApp\bin\Debug\Guna.UI2.dll
 E:\School\HKIINAM4\LTUDM\Project\ChatApp\obj\Debug\CLIENT.csproj.CopyComplete
+D:\ChatApp\ChatApp\bin\Debug\ChatApp.exe.config
+D:\ChatApp\ChatApp\bin\Debug\ChatApp.exe
+D:\ChatApp\ChatApp\bin\Debug\ChatApp.pdb
+D:\ChatApp\ChatApp\bin\Debug\Guna.UI2.dll
+D:\ChatApp\ChatApp\obj\Debug\CLIENT.csproj.AssemblyReference.cache
+D:\ChatApp\ChatApp\obj\Debug\ChatApp.ChatWindow.resources
+D:\ChatApp\ChatApp\obj\Debug\ChatApp.createRoom.resources
+D:\ChatApp\ChatApp\obj\Debug\ChatApp.Client.resources
+D:\ChatApp\ChatApp\obj\Debug\ChatApp.Properties.Resources.resources
+D:\ChatApp\ChatApp\obj\Debug\CLIENT.csproj.GenerateResource.cache
+D:\ChatApp\ChatApp\obj\Debug\CLIENT.csproj.CoreCompileInputs.cache
+D:\ChatApp\ChatApp\obj\Debug\CLIENT.csproj.CopyComplete
+D:\ChatApp\ChatApp\obj\Debug\ChatApp.exe
+D:\ChatApp\ChatApp\obj\Debug\ChatApp.pdb

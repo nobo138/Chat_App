@@ -42,11 +42,6 @@ namespace ChatApp
                 string message = Encoding.UTF8.GetString(instream);
                 Console.WriteLine("client:" + message);
 
-                //process message
-                //decrypt incoming message
-                //int length = Int32.Parse(XORCipher(message.Substring(0, 10)));
-                //message = XORCipher(message.Substring(0, length + 10));
-                //message = message.Substring(10, length);
                 int length = Int32.Parse(message.Substring(0, 10));
                 message = message.Substring(0, length + 10);
                 message = message.Substring(10, length);
@@ -106,31 +101,24 @@ namespace ChatApp
         {
             string length = message.Length.ToString();
             message = String.Format("{0, -10}", length) + message;
-            ////Console.WriteLine(message);
-            //message = XORCipher(message);
 
 
-
-            string filename = "E:\\School\\HKIINAM4\\LTUDM\\Project\\ChatApp\\TextFile1.txt";
-            
-            //byte[] transType = new byte[] { (byte)0 };
+            string filename = "D:\\ChatApp\\ChatApp\\TextFile1.txt";
             byte[] file = File.ReadAllBytes(filename);
-            //byte[] transData = new byte[transType.Length + file.Length];
-            //transType.CopyTo(transData, 0);
-            //file.CopyTo(transData, transType.Length);
-            //byte[] fileBuffer = new byte[file.Length];
+
             byte[] noti = Encoding.UTF8.GetBytes(message);
             link_file.Text = "TextFile1.txt";
 
             //combine array byte
-            byte[] ret = new byte[file.Length + noti.Length];
-            Buffer.BlockCopy(noti, 0, ret, 0, noti.Length);
-            Buffer.BlockCopy(file, 0, ret, noti.Length, file.Length);
+            byte[] finalByteSendToServer = new byte[file.Length + noti.Length];
+            Buffer.BlockCopy(noti, 0, finalByteSendToServer, 0, noti.Length);
+            Buffer.BlockCopy(file, 0, finalByteSendToServer, noti.Length, file.Length);
            
-
+               
             //Client.client.GetStream().Write(noti, 0, noti.Length);
-            Client.client.GetStream().Write(ret, 0, ret.Length);
+            Client.client.GetStream().Write(finalByteSendToServer, 0, finalByteSendToServer.Length);
         }
+
         private void SendData(string message)
         {
             try
@@ -268,7 +256,7 @@ namespace ChatApp
         {
 
         }
-
+       
         private void file_Btn_Click(object sender, EventArgs e)
         {
             sendFile(sendFileHeader + "|");

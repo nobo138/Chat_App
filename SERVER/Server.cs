@@ -107,19 +107,17 @@ namespace SERVER
                 if (stream.CanRead != true || stream.CanWrite != true) break;
                 try
                 {
-                    string message = ReceiveData(stream, client);
+                    byte[] messageBytes = ReceiveDataBytes(stream, client);
 
+                    string messageString = Encoding.UTF8.GetString(messageBytes);
 
-                    //int length = Int32.Parse(XORCipher(message.Substring(0, 10)));
-                    //message = XORCipher(message.Substring(0, length + 10));
-                    //message = message.Substring(10, length);
-                    int length = Int32.Parse(message.Substring(0, 10));
-                    message = message.Substring(0, length + 10);
-                    message = message.Substring(10, length);
-                    Console.WriteLine("client receive:" + message);
+                    int length = Int32.Parse(messageString.Substring(0, 10));
+                    messageString = messageString.Substring(0, length + 10);
+                    messageString = messageString.Substring(10, length);
+                    Console.WriteLine("client receive:" + messageString);
                     //prcessing
-                    string[] data = message.Split('|');
-                    Console.WriteLine(message);
+                    string[] data = messageString.Split('|');
+
                     switch(data[0])
                     {
                         case "REGISTER":
@@ -138,7 +136,7 @@ namespace SERVER
                             startChatSession(data, client);
                             break;
                         case "CHAT":
-                            sendToRoom(chatHeader + '|' + getUser(client).Display_name + ": " + message.Substring(message.IndexOf('|') + 1, message.Length - chatHeader.Length - 1)
+                            sendToRoom(chatHeader + '|' + getUser(client).Display_name + ": " + messageString.Substring(messageString.IndexOf('|') + 1, messageString.Length - chatHeader.Length - 1)
                                         , getUser(client).Room_id, client);
 
                             break;
@@ -155,10 +153,10 @@ namespace SERVER
                             proxy = client;
                             break;
                         case "CHAT_PROXY":
-                            sendToRoom(message, data[1], client);
+                            sendToRoom(messageString, data[1], client);
                             break;
                         case "SEND_FILE":
-                            sendFile(message, client);
+                            sendFile(messageBytes,messageString, client);
                             break;
                         //default:
                         //    break;
@@ -174,6 +172,65 @@ namespace SERVER
                 }
             }
 
+        }
+
+        private string ReceiveData(NetworkStream str, TcpClient client)
+        {
+            byte[] buffer = new byte[client.ReceiveBufferSize];
+            str.Read(buffer, 0, buffer.Length);
+
+            string mess = Encoding.UTF8.GetString(buffer);
+            return mess;
+
+        }
+
+        private byte[] ReceiveDataBytes(NetworkStream str, TcpClient client)
+        {
+            byte[] buffer = new byte[client.ReceiveBufferSize];
+            str.Read(buffer, 0, buffer.Length);
+
+            return buffer;
+
+        }
+        private string getMessageHeader(NetworkStream stream, TcpClient client)
+        {
+            string message = getMessageStringFilter(stream, client);
+            Console.WriteLine("client receive:" + message);
+            //prcessing
+            string[] data = message.Split('|');
+
+            return data[0];
+        }
+
+        private string[] getMessageFull(NetworkStream stream, TcpClient client)
+        {
+            string message = getMessageStringFilter(stream, client);
+            Console.WriteLine("client receive:" + message);
+            //prcessing
+            string[] data = message.Split('|');
+
+            return data;
+        }
+
+        //get message from client
+        private string getMessageString(NetworkStream str, TcpClient client)
+        {
+            byte[] buffer = new byte[client.ReceiveBufferSize];
+            str.Read(buffer, 0, buffer.Length);
+
+            string mess = Encoding.UTF8.GetString(buffer);
+            return mess;
+        }
+
+        private string getMessageStringFilter(NetworkStream stream, TcpClient client)
+        {
+            string message = getMessageString(stream, client);
+
+            int length = Int32.Parse(message.Substring(0, 10));
+            message = message.Substring(0, length + 10);
+            message = message.Substring(10, length);
+
+            return message;
         }
 
         private string getRoomName(string roomId)
@@ -208,6 +265,8 @@ namespace SERVER
           
             if (message.StartsWith("CHAT_PROXY") ==true)
             {
+
+
                 SendData("CHAT_PROXY" + "|" + room_id + "|" + message, client);
             }
             else
@@ -248,14 +307,36 @@ namespace SERVER
             }
             return room_id;
         }
-        private void sendFile(string message, TcpClient client)
-        { 
-            //message = "SEND_FILE" + "|" + message;
-            //SendData(message,client);
-            
-           // File.WriteAllBytes(@"E:\\School\\HKIINAM4\\LTUDM\\Project\\ChatApp\\TextFile1.txt", message.ToArray());
+        private void sendFile(byte[] messageBytes, string messageString, TcpClient client)
+        {
+
+            byte[] contentFile = messageBytes.Skip(20).ToArray();
+            bool ok = ByteArrayToFile("D:\\ChatApp\\SERVER\\TextFile2.txt", contentFile);
+
+            messageString = "SEND_FILE" + "|";
+            SendData(messageString, client);
+
+            // File.WriteAllBytes(@"E:\\School\\HKIINAM4\\LTUDM\\Project\\ChatApp\\TextFile1.txt", message.ToArray());
 
         }
+
+        public bool ByteArrayToFile(string fileName, byte[] byteArray)
+        {
+            try
+            {
+                using (var fs = new FileStream(fileName, FileMode.Create, FileAccess.Write))
+                {
+                    fs.Write(byteArray, 0, byteArray.Length);
+                    return true;
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Exception caught in process: {0}", ex);
+                return false;
+            }
+        }
+
         private bool authenticate(string username, string pwd)
         {
             var usersCollection = database.GetCollection<BsonDocument>("users");
@@ -309,23 +390,11 @@ namespace SERVER
             NetworkStream stream = client.GetStream();
             string length = message.Length.ToString();
             message = String.Format("{0, -10}", length) + message;
-            //Console.WriteLine(message);
-            //message = XORCipher(message);
 
             byte[] noti = Encoding.UTF8.GetBytes(message);
             stream.Write(noti, 0, noti.Length);
         }
 
-        //get message from client
-        private string ReceiveData(NetworkStream str, TcpClient client)
-        {
-            byte[] buffer = new byte[client.ReceiveBufferSize];
-            str.Read(buffer, 0, buffer.Length);
-
-            string mess = Encoding.UTF8.GetString(buffer);
-            return mess;
-
-        }
         //start server
         private void start_btn_Click(object sender, EventArgs e)
         {

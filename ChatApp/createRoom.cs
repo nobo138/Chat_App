@@ -19,7 +19,7 @@ namespace ChatApp
             string length = message.Length.ToString();
             message = String.Format("{0, -10}", length) + message;
             Console.WriteLine(message);
-            message = XORCipher(message);
+            //message = XORCipher(message);
 
             byte[] noti = Encoding.UTF8.GetBytes(message);
             stream.Write(noti, 0, noti.Length);
@@ -38,7 +38,7 @@ namespace ChatApp
                 //message = XORCipher(message.Substring(0, length + 10));
                 int length = Int32.Parse(message.Substring(0, 10));
                 message = message.Substring(0, length + 10);
-                //message = message.Substring(10, length);
+                message = message.Substring(10, length);
                 //message = message.Substring(10, length);
 
                 Console.WriteLine("Client-decrypt: " + message);
