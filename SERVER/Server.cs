@@ -158,10 +158,10 @@ namespace SERVER
                             sendToRoom(message, data[1], client);
                             break;
                         case "SEND_FILE":
-                            sendFile(data, client);
+                            sendFile(message, client);
                             break;
-                        default:
-                            break;
+                        //default:
+                        //    break;
                                 
                     }
                     
@@ -248,11 +248,12 @@ namespace SERVER
             }
             return room_id;
         }
-        private void sendFile(string[] data, TcpClient client)
-        {
+        private void sendFile(string message, TcpClient client)
+        { 
             //message = "SEND_FILE" + "|" + message;
             //SendData(message,client);
-            File.WriteAllBytes(@"E:\\School\\HKIINAM4\\LTUDM\\Project\\ChatApp\\TextFile1.txt", data[1].ToArray());
+            
+           // File.WriteAllBytes(@"E:\\School\\HKIINAM4\\LTUDM\\Project\\ChatApp\\TextFile1.txt", message.ToArray());
 
         }
         private bool authenticate(string username, string pwd)
