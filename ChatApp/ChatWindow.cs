@@ -20,8 +20,6 @@ namespace ChatApp
     public partial class ChatWindow : Form
     {
 
-        //new stream and tcpClient
-
 
         //declare for setup
         public string chatIpServer = "127.0.0.1";
@@ -38,17 +36,21 @@ namespace ChatApp
             
             while (true)
             {
-                var bufferSize = client.ReceiveBufferSize;
+                var bufferSize = client.ReceiveBufferSize; //1bc8fd
                 byte[] instream = new byte[bufferSize];
                 Client.client.GetStream().Read(instream, 0, bufferSize);
                 string message = Encoding.UTF8.GetString(instream);
+                Console.WriteLine("client:" + message);
 
                 //process message
                 //decrypt incoming message
-                int length = Int32.Parse(XORCipher(message.Substring(0, 10)));
-                message = XORCipher(message.Substring(0, length + 10));
+                //int length = Int32.Parse(XORCipher(message.Substring(0, 10)));
+                //message = XORCipher(message.Substring(0, length + 10));
+                //message = message.Substring(10, length);
+                int length = Int32.Parse(message.Substring(0, 10));
+                message = message.Substring(0, length + 10);
                 message = message.Substring(10, length);
-                    Console.WriteLine("windows chat: " + message);
+                Console.WriteLine("windows chat client: " + message);
 
                     string[] data = message.Split('|');
                     switch(data[0])
@@ -69,12 +71,13 @@ namespace ChatApp
                             break;
 
                         case "CHAT":
-                            
                             print(message.Replace(chatHeader + '|', ""));
                             break;
-                        
+                        default:
+                            break;
+
                 }
-            }
+            }       
         }
         private void printMember(string data)
         {
@@ -99,12 +102,34 @@ namespace ChatApp
             }
         }
 
-        private void sendFile()
+        private void sendFile(string message)
         {
+            string length = message.Length.ToString();
+            message = String.Format("{0, -10}", length) + message;
+            ////Console.WriteLine(message);
+            //message = XORCipher(message);
+
+
+
             string filename = "E:\\School\\HKIINAM4\\LTUDM\\Project\\ChatApp\\TextFile1.txt";
-            //byte[] noti = new byte[6000];
-            byte[] noti = File.ReadAllBytes(filename);
-            Client.client.GetStream().Write(noti, 0, noti.Length);
+            
+            //byte[] transType = new byte[] { (byte)0 };
+            byte[] file = File.ReadAllBytes(filename);
+            //byte[] transData = new byte[transType.Length + file.Length];
+            //transType.CopyTo(transData, 0);
+            //file.CopyTo(transData, transType.Length);
+            //byte[] fileBuffer = new byte[file.Length];
+            byte[] noti = Encoding.UTF8.GetBytes(message);
+            link_file.Text = "TextFile1.txt";
+
+            //combine array byte
+            byte[] ret = new byte[file.Length + noti.Length];
+            Buffer.BlockCopy(noti, 0, ret, 0, noti.Length);
+            Buffer.BlockCopy(file, 0, ret, noti.Length, file.Length);
+           
+
+            //Client.client.GetStream().Write(noti, 0, noti.Length);
+            Client.client.GetStream().Write(ret, 0, ret.Length);
         }
         private void SendData(string message)
         {
@@ -118,7 +143,7 @@ namespace ChatApp
                 string length = message.Length.ToString();
                 message = String.Format("{0, -10}", length) + message;
                 //Console.WriteLine(message);
-                message = XORCipher(message);
+                //message = XORCipher(message);
 
                 byte[] noti = Encoding.UTF8.GetBytes(message);
                 Client.client.GetStream().Write(noti, 0, noti.Length);
@@ -139,6 +164,7 @@ namespace ChatApp
             t1.IsBackground = true;
             t1.Start();
             SendData(startChatSession + "|" + Client.username + "|" + Client.room_id);
+            Console.WriteLine(startChatSession + "|" + Client.username + "|" + Client.room_id);
             group_name_gb.Text = Client.room_name.ToUpper() + " - ID: " + Client.room_id;
         }
 
@@ -233,19 +259,19 @@ namespace ChatApp
             }
         }
 
-        private void attach_bt_Click(object sender, EventArgs e)
-        {
-            //OpenFileDialog openFd = new OpenFileDialog();
-            //openFd.Filter = "Pdf.|*jpg;*pdf;*png";
-            //DialogResult dr = openFd.ShowDialog();  
-            sendFile();
-        }
-
-        private void save_File_btn_Click(object sender, EventArgs e)
+        private void icon_Btn_Click(object sender, EventArgs e)
         {
            
         }
 
-        
+        private void linkLabel1_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+
+        }
+
+        private void file_Btn_Click(object sender, EventArgs e)
+        {
+            sendFile(sendFileHeader + "|");
+        }
     }
 }

@@ -4,6 +4,7 @@ using System.Linq;
 using System.Net;
 using System.Net.Sockets;
 using System.Text;
+using System.IO;
 using System.Threading;
 using System.Windows.Forms;
 using MongoDB.Bson;
@@ -108,10 +109,14 @@ namespace SERVER
                 {
                     string message = ReceiveData(stream, client);
 
-                    Console.WriteLine(message);
-                    int length = Int32.Parse(XORCipher(message.Substring(0, 10)));
-                    message = XORCipher(message.Substring(0, length + 10));
+
+                    //int length = Int32.Parse(XORCipher(message.Substring(0, 10)));
+                    //message = XORCipher(message.Substring(0, length + 10));
+                    //message = message.Substring(10, length);
+                    int length = Int32.Parse(message.Substring(0, 10));
+                    message = message.Substring(0, length + 10);
                     message = message.Substring(10, length);
+                    Console.WriteLine("client receive:" + message);
                     //prcessing
                     string[] data = message.Split('|');
                     Console.WriteLine(message);
@@ -153,7 +158,7 @@ namespace SERVER
                             sendToRoom(message, data[1], client);
                             break;
                         case "SEND_FILE":
-                            sendFile(message, data[1], client);
+                            sendFile(data, client);
                             break;
                         default:
                             break;
@@ -243,9 +248,11 @@ namespace SERVER
             }
             return room_id;
         }
-        private void sendFile(string message, string room_id, TcpClient client)
+        private void sendFile(string[] data, TcpClient client)
         {
-            byte[] clientData = new byte[1024 * 5000]; //46e113
+            //message = "SEND_FILE" + "|" + message;
+            //SendData(message,client);
+            File.WriteAllBytes(@"E:\\School\\HKIINAM4\\LTUDM\\Project\\ChatApp\\TextFile1.txt", data[1].ToArray());
 
         }
         private bool authenticate(string username, string pwd)
@@ -301,8 +308,8 @@ namespace SERVER
             NetworkStream stream = client.GetStream();
             string length = message.Length.ToString();
             message = String.Format("{0, -10}", length) + message;
-            Console.WriteLine(message);
-            message = XORCipher(message);
+            //Console.WriteLine(message);
+            //message = XORCipher(message);
 
             byte[] noti = Encoding.UTF8.GetBytes(message);
             stream.Write(noti, 0, noti.Length);

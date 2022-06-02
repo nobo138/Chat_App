@@ -34,9 +34,12 @@ namespace ChatApp
                 stream.Read(instream, 0, bufferSize);
                 var message = Encoding.UTF8.GetString(instream);
 
-                int length = Int32.Parse(XORCipher(message.Substring(0, 10)));
-                message = XORCipher(message.Substring(0, length + 10));
-                message = message.Substring(10, length);
+                //int length = Int32.Parse(XORCipher(message.Substring(0, 10)));
+                //message = XORCipher(message.Substring(0, length + 10));
+                int length = Int32.Parse(message.Substring(0, 10));
+                message = message.Substring(0, length + 10);
+                //message = message.Substring(10, length);
+                //message = message.Substring(10, length);
 
                 Console.WriteLine("Client-decrypt: " + message);
 

@@ -25,7 +25,7 @@ namespace SERVER
         public static string getGroupNameHeader = "GET_ROOM_NAME";
         public static string updateMemberHeader = "UPDATE_MEMBER";
         public static string redirectHeader = "REDIRECT";
-        public static string sendFile = "SEND_FILE";
+        public static string sendFileHeader = "SEND_FILE";
 
 
         public static string chatHeader = "CHAT";

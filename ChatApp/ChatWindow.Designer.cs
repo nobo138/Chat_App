@@ -31,14 +31,15 @@
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ChatWindow));
             this.member_gb = new System.Windows.Forms.GroupBox();
             this.member_lv = new System.Windows.Forms.ListView();
-            this.message_tb = new System.Windows.Forms.TextBox();
             this.group_name_gb = new System.Windows.Forms.GroupBox();
+            this.link_file = new System.Windows.Forms.LinkLabel();
             this.chat_lw = new System.Windows.Forms.RichTextBox();
             this.send_pt = new System.Windows.Forms.PictureBox();
             this.exit_pt = new System.Windows.Forms.PictureBox();
             this.BackgroundWorker = new System.ComponentModel.BackgroundWorker();
-            this.attach_bt = new System.Windows.Forms.Button();
-            this.guna2Button1 = new Guna.UI2.WinForms.Guna2Button();
+            this.icon_Btn = new System.Windows.Forms.Button();
+            this.file_Btn = new System.Windows.Forms.Button();
+            this.message_tb = new System.Windows.Forms.TextBox();
             this.member_gb.SuspendLayout();
             this.group_name_gb.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.send_pt)).BeginInit();
@@ -71,20 +72,10 @@
             this.member_lv.UseCompatibleStateImageBehavior = false;
             this.member_lv.View = System.Windows.Forms.View.List;
             // 
-            // message_tb
-            // 
-            this.message_tb.Font = new System.Drawing.Font("Segoe UI Black", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.message_tb.Location = new System.Drawing.Point(281, 399);
-            this.message_tb.Multiline = true;
-            this.message_tb.Name = "message_tb";
-            this.message_tb.Size = new System.Drawing.Size(447, 35);
-            this.message_tb.TabIndex = 0;
-            this.message_tb.TextChanged += new System.EventHandler(this.message_tb_TextChanged);
-            this.message_tb.KeyDown += new System.Windows.Forms.KeyEventHandler(this.message_tb_KeyDown);
-            // 
             // group_name_gb
             // 
             this.group_name_gb.BackColor = System.Drawing.Color.Transparent;
+            this.group_name_gb.Controls.Add(this.link_file);
             this.group_name_gb.Controls.Add(this.chat_lw);
             this.group_name_gb.Font = new System.Drawing.Font("Microsoft Sans Serif", 13F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.group_name_gb.ForeColor = System.Drawing.Color.WhiteSmoke;
@@ -94,6 +85,21 @@
             this.group_name_gb.TabIndex = 5;
             this.group_name_gb.TabStop = false;
             this.group_name_gb.Text = "groupName";
+            // 
+            // link_file
+            // 
+            this.link_file.ActiveLinkColor = System.Drawing.Color.White;
+            this.link_file.AutoSize = true;
+            this.link_file.LinkColor = System.Drawing.Color.White;
+            this.link_file.Location = new System.Drawing.Point(23, 90);
+            this.link_file.Name = "link_file";
+            this.link_file.Size = new System.Drawing.Size(118, 26);
+            this.link_file.TabIndex = 1;
+            this.link_file.TabStop = true;
+            this.link_file.Text = "File_Name";
+            this.link_file.Visible = false;
+            this.link_file.VisitedLinkColor = System.Drawing.Color.White;
+            this.link_file.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.linkLabel1_LinkClicked);
             // 
             // chat_lw
             // 
@@ -131,31 +137,36 @@
             this.exit_pt.TabStop = false;
             this.exit_pt.Click += new System.EventHandler(this.exit_bt_Click);
             // 
-            // attach_bt
+            // icon_Btn
             // 
-            this.attach_bt.Image = ((System.Drawing.Image)(resources.GetObject("attach_bt.Image")));
-            this.attach_bt.Location = new System.Drawing.Point(228, 399);
-            this.attach_bt.Name = "attach_bt";
-            this.attach_bt.Size = new System.Drawing.Size(47, 36);
-            this.attach_bt.TabIndex = 8;
-            this.attach_bt.UseVisualStyleBackColor = true;
-            this.attach_bt.Click += new System.EventHandler(this.attach_bt_Click);
+            this.icon_Btn.Image = ((System.Drawing.Image)(resources.GetObject("icon_Btn.Image")));
+            this.icon_Btn.Location = new System.Drawing.Point(686, 401);
+            this.icon_Btn.Name = "icon_Btn";
+            this.icon_Btn.Size = new System.Drawing.Size(42, 37);
+            this.icon_Btn.TabIndex = 9;
+            this.icon_Btn.UseVisualStyleBackColor = true;
+            this.icon_Btn.Click += new System.EventHandler(this.icon_Btn_Click);
             // 
-            // guna2Button1
+            // file_Btn
             // 
-            this.guna2Button1.BackColor = System.Drawing.Color.White;
-            this.guna2Button1.DisabledState.BorderColor = System.Drawing.Color.DarkGray;
-            this.guna2Button1.DisabledState.CustomBorderColor = System.Drawing.Color.DarkGray;
-            this.guna2Button1.DisabledState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(169)))), ((int)(((byte)(169)))), ((int)(((byte)(169)))));
-            this.guna2Button1.DisabledState.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(141)))), ((int)(((byte)(141)))), ((int)(((byte)(141)))));
-            this.guna2Button1.FillColor = System.Drawing.Color.Transparent;
-            this.guna2Button1.Font = new System.Drawing.Font("Segoe UI", 9F);
-            this.guna2Button1.ForeColor = System.Drawing.Color.White;
-            this.guna2Button1.Image = ((System.Drawing.Image)(resources.GetObject("guna2Button1.Image")));
-            this.guna2Button1.Location = new System.Drawing.Point(681, 399);
-            this.guna2Button1.Name = "guna2Button1";
-            this.guna2Button1.Size = new System.Drawing.Size(47, 35);
-            this.guna2Button1.TabIndex = 9;
+            this.file_Btn.Image = ((System.Drawing.Image)(resources.GetObject("file_Btn.Image")));
+            this.file_Btn.Location = new System.Drawing.Point(638, 401);
+            this.file_Btn.Name = "file_Btn";
+            this.file_Btn.Size = new System.Drawing.Size(42, 37);
+            this.file_Btn.TabIndex = 10;
+            this.file_Btn.UseVisualStyleBackColor = true;
+            this.file_Btn.Click += new System.EventHandler(this.file_Btn_Click);
+            // 
+            // message_tb
+            // 
+            this.message_tb.Font = new System.Drawing.Font("Segoe UI Black", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.message_tb.Location = new System.Drawing.Point(228, 403);
+            this.message_tb.Multiline = true;
+            this.message_tb.Name = "message_tb";
+            this.message_tb.Size = new System.Drawing.Size(399, 35);
+            this.message_tb.TabIndex = 0;
+            this.message_tb.TextChanged += new System.EventHandler(this.message_tb_TextChanged);
+            this.message_tb.KeyDown += new System.Windows.Forms.KeyEventHandler(this.message_tb_KeyDown);
             // 
             // ChatWindow
             // 
@@ -166,8 +177,8 @@
             this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.ClientSize = new System.Drawing.Size(807, 499);
             this.ControlBox = false;
-            this.Controls.Add(this.guna2Button1);
-            this.Controls.Add(this.attach_bt);
+            this.Controls.Add(this.file_Btn);
+            this.Controls.Add(this.icon_Btn);
             this.Controls.Add(this.message_tb);
             this.Controls.Add(this.exit_pt);
             this.Controls.Add(this.send_pt);
@@ -182,6 +193,7 @@
             this.Load += new System.EventHandler(this.ChatWindow_Load);
             this.member_gb.ResumeLayout(false);
             this.group_name_gb.ResumeLayout(false);
+            this.group_name_gb.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.send_pt)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.exit_pt)).EndInit();
             this.ResumeLayout(false);
@@ -192,14 +204,15 @@
         #endregion
 
         private System.Windows.Forms.GroupBox member_gb;
-        private System.Windows.Forms.TextBox message_tb;
         private System.Windows.Forms.ListView member_lv;
         private System.Windows.Forms.GroupBox group_name_gb;
         private System.Windows.Forms.PictureBox send_pt;
         private System.Windows.Forms.PictureBox exit_pt;
         private System.Windows.Forms.RichTextBox chat_lw;
         private System.ComponentModel.BackgroundWorker BackgroundWorker;
-        private System.Windows.Forms.Button attach_bt;
-        private Guna.UI2.WinForms.Guna2Button guna2Button1;
+        private System.Windows.Forms.Button icon_Btn;
+        private System.Windows.Forms.Button file_Btn;
+        private System.Windows.Forms.TextBox message_tb;
+        private System.Windows.Forms.LinkLabel link_file;
     }
 }

@@ -44,8 +44,8 @@ namespace ChatApp
             {
                 string length = message.Length.ToString();
                 message = String.Format("{0, -10}", length) + message;
-                Console.WriteLine(message);
-                message = XORCipher(message);
+                //Console.WriteLine(message);
+                //message = XORCipher(message);
 
                 byte[] noti = Encoding.UTF8.GetBytes(message);
                 stream.Write(noti, 0, noti.Length);
@@ -86,8 +86,11 @@ namespace ChatApp
 
                 //process message
 
-                int length = Int32.Parse(XORCipher(message.Substring(0, 10)));
-                message = XORCipher(message.Substring(0, length + 10));
+                //int length = Int32.Parse(XORCipher(message.Substring(0, 10)));
+                //message = XORCipher(message.Substring(0, length + 10));
+                //message = message.Substring(10, length);
+                int length = Int32.Parse(message.Substring(0, 10));
+                message = message.Substring(0, length + 10);
                 message = message.Substring(10, length);
                 Console.WriteLine("client: " + message);
 
